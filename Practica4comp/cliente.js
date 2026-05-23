@@ -258,7 +258,7 @@ function iniciarProcesoPedido(
 
         actualizarPedidos();
 
-    }, 1000);
+    }, 2000);
 
     // EMPACANDO
 
