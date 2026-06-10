@@ -1,37 +1,41 @@
-// MOSTRAR MENÚ
+// MENÚ
 
-function mostrarMenu(){
+function mostrarMenu() {
+
     mostrarProductos(catalogo);
 }
 
-// MOSTRAR PRODUCTOS
+// PRODUCTOS
 
-function mostrarProductos(listaProductos){
-    const menu=
+function mostrarProductos(
+    listaProductos
+) {
+
+    const menu =
     document.getElementById("menu");
 
-    menu.innerHTML="";
+    menu.innerHTML = "";
 
-    const productosHTML=
-    listaProductos.map((producto)=>{
+    const productosHTML =
+    listaProductos.map((producto) => {
 
-        let estado=`
+        let estado = `
             <p class="disponible">
                 Disponible
             </p>
         `;
 
-        let botonDeshabilitado="";
+        let botonDeshabilitado = "";
 
-        if(!producto.disponible){
+        if (!producto.disponible) {
 
-            estado=`
+            estado = `
                 <p class="agotado">
                     Agotado
                 </p>
             `;
 
-            botonDeshabilitado=
+            botonDeshabilitado =
             "disabled";
         }
 
@@ -71,22 +75,22 @@ function mostrarProductos(listaProductos){
             </button>
 
         </div>
-
         `;
     });
 
-    menu.innerHTML=
+    menu.innerHTML =
     productosHTML.join("");
 }
 
-// BUSCAR PRODUCTOS
+// BUSCAR
 
-function buscarEnMenu(){
-    const texto=
+function buscarEnMenu() {
+
+    const texto =
     document.getElementById("busqueda")
     .value;
 
-    const resultados=
+    const resultados =
     buscarProductos(texto);
 
     mostrarProductos(resultados);
@@ -94,113 +98,244 @@ function buscarEnMenu(){
 
 // FILTROS
 
-function verBebidas(){
+function verBebidas() {
+
     mostrarProductos(
         obtenerBebidas()
     );
 }
 
-function verPostres(){
+function verPostres() {
+
     mostrarProductos(
         obtenerPostres()
     );
 }
 
-function verSnacks(){
+function verSnacks() {
+
     mostrarProductos(
         obtenerSnacks()
     );
 }
 
-function ordenarMenorPrecio(){
+function ordenarMenorPrecio() {
+
     mostrarProductos(
         ordenarBaratos()
     );
 }
 
-function ordenarMayorPrecio(){
+function ordenarMayorPrecio() {
+
     mostrarProductos(
         ordenarCaros()
     );
 }
 
-// MOSTRAR PROMOCIONES
+// PROMOCIONES
 
-function abrirPromociones(){
-    const modal=
-    document.getElementById("modalPromociones");
+function abrirPromociones() {
 
-    const lista=
-    document.getElementById("listaPromociones");
+    const modal =
+    document.getElementById(
+        "modalPromociones"
+    );
 
-    lista.innerHTML="";
+    const lista =
+    document.getElementById(
+        "listaPromociones"
+    );
 
-    promociones.forEach((promo)=>{
+    lista.innerHTML = "";
 
-        lista.innerHTML+=`
+    promociones.forEach((promo) => {
+
+        lista.innerHTML += `
             <li>${promo}</li>
         `;
     });
 
-    modal.style.display="flex";
+    modal.style.display = "flex";
 }
 
-// CERRAR PROMOCIONES
+function cerrarPromociones() {
 
-function cerrarPromociones(){
-    document.getElementById("modalPromociones")
-    .style.display="none";
+    document.getElementById(
+        "modalPromociones"
+    )
+    .style.display = "none";
 }
 
-// ACTUALIZAR PEDIDOS
+// PEDIDOS
 
-function actualizarPedidos(){
-    const listaPedidos=
-    document.getElementById("listaPedidos");
+function actualizarPedidos() {
 
-    listaPedidos.innerHTML="";
+    const listaPedidos =
+    document.getElementById(
+        "listaPedidos"
+    );
 
-    pedidos.forEach((pedido,index)=>{
+    listaPedidos.innerHTML = "";
 
-        listaPedidos.innerHTML+=`
+    pedidos.forEach((pedido, index) => {
+
+        listaPedidos.innerHTML += `
 
             <li>
 
-                ${pedido.nombre}
-                - $${pedido.precio}
+                <strong>
+                    ${pedido.nombre}
+                </strong>
+
+                <br>
+
+                Estado:
+                ${pedido.estado}
+
+                <br>
+
+                Tiempo restante:
+                ${pedido.tiempoRestante}s
+
+                <br>
 
                 <button
                     onclick="eliminarPedido(${index})"
                 >
-                    X
+                    Cancelar
                 </button>
 
             </li>
 
+            <hr>
         `;
     });
 
-    const subtotal=
+    const subtotal =
     calcularSubtotal();
 
-    const ivaCalculado=
+    const ivaCalculado =
     calcularIVA(subtotal);
 
-    const totalConIVA=
+    const totalConIVA =
     calcularTotal(
         subtotal,
         ivaCalculado
     );
 
     document.getElementById("subtotal")
-    .innerHTML=
+    .innerHTML =
     `Subtotal: $${subtotal.toFixed(2)}`;
 
     document.getElementById("iva")
-    .innerHTML=
+    .innerHTML =
     `IVA (16%): $${ivaCalculado.toFixed(2)}`;
 
     document.getElementById("total")
-    .innerHTML=
+    .innerHTML =
     `Total: $${totalConIVA.toFixed(2)}`;
+}
+
+// ASINCRONÍA
+
+function iniciarProcesoPedido(
+    pedido
+) {
+
+    actualizarPedidos();
+
+    // PREPARANDO
+
+    setTimeout(() => {
+
+        if (pedido.cancelado) {
+            return;
+        }
+
+        pedido.estado =
+        "Preparando";
+
+        actualizarPedidos();
+
+    }, 1000);
+
+    // EMPACANDO
+
+    setTimeout(() => {
+
+        if (pedido.cancelado) {
+            return;
+        }
+
+        pedido.estado =
+        "Empacando";
+
+        actualizarPedidos();
+
+    }, 5000);
+
+    // CONTADOR
+
+    const intervalo =
+    setInterval(() => {
+
+        if (pedido.cancelado) {
+
+            clearInterval(intervalo);
+
+            return;
+        }
+
+        pedido.tiempoRestante--;
+
+        actualizarPedidos();
+
+        // TERMINAR PEDIDO
+
+        if (
+            pedido.tiempoRestante <= 0
+        ) {
+
+            clearInterval(intervalo);
+
+            prepararPedido(pedido)
+
+            .then((mensaje) => {
+
+                pedido.estado =
+                "Pedido entregado";
+
+                actualizarPedidos();
+
+                notificarPedido(
+                    mensaje,
+                    mostrarNotificacion
+                );
+            })
+
+            .catch((error) => {
+
+                pedido.estado =
+                "Cancelado";
+
+                actualizarPedidos();
+
+                notificarPedido(
+                    error,
+                    mostrarNotificacion
+                );
+            });
+        }
+
+    }, 1000);
+}
+
+// NOTIFICACIÓN
+
+function mostrarNotificacion(
+    mensaje
+) {
+
+    alert(mensaje);
 }
