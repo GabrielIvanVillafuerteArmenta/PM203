@@ -4,25 +4,26 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { Saludo } from './components/Saludo';
 import { Saludo2 } from './components/Saludo2';
+import { Perfil } from './components/Perfil';
 
 /*Zona2: Hogar de los componentes*/
 
 export default function App() {
+
   return (
+
     <View style={styles.container}>
 
-      <Text>-----------------------Componentes nativos-----------------------</Text>
+    <Perfil nombre="Gabriel Ivan Villafuerte Armenta" carrera="Ingeniería en Sistemas" materia="Programación Móvil" cuatrimestre="9°" />
 
-      <Image source={require('./assets/wave.png')} style={styles.image} />
-      <Text>Hola Mundo ReactNative</Text>
-
-      <Text>-----------------------Componentes propio simple-----------------------</Text>
-      <Saludo />
-
-      <Text>-----------------------Componentes propio compuesto-----------------------</Text>
-      <Saludo2 />
+    <Perfil
+    nombre="Gabriel Ivan Villafuerte Armenta" 
+    carrera="Ingeniería en Sistemas" 
+    materia="Programacion Móvil" 
+    cuatrimestre="9" />
 
       <StatusBar style="auto" />
+
     </View>
   );
 }
