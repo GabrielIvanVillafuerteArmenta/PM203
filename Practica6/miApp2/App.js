@@ -14,9 +14,18 @@ export default function App() {
 
     <View style={styles.container}>
 
-    <Perfil nombre="Gabriel Ivan Villafuerte Armenta" carrera="Ingeniería en Sistemas" materia="Programación Móvil" cuatrimestre="9°" />
+    <Perfil estiloExt={styles.tarjetaRoja} nombre="Gabriel Ivan Villafuerte Armenta" carrera="Ingeniería en Sistemas" materia="Programación Móvil" cuatrimestre="9°" />
 
     <Perfil
+    estiloExt={styles.tarjetaVerde}
+    nombre="Gabriel Ivan Villafuerte Armenta" 
+    carrera="Ingeniería en Sistemas" 
+    materia="Programacion Móvil" 
+    cuatrimestre="9" />
+
+
+    <Perfil
+    estiloExt={styles.tarjetaVerde}
     nombre="Gabriel Ivan Villafuerte Armenta" 
     carrera="Ingeniería en Sistemas" 
     materia="Programacion Móvil" 
@@ -35,10 +44,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'Space-evenly',
+    flexDirection: 'row',
   },
   image: {
     width: 120,
     height: 120,
   },
+
+  tarjetaRoja:{backgroundColor: '#ff6b6b'},
+  tarjetaVerde:{backgroundColor: '#6bcb77'}
+
 });
