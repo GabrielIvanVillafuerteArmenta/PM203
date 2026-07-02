@@ -36,7 +36,7 @@ export default function TextInputScreen() {
     }
 
     if (!correo.includes("@") || !correo.includes(".com")) {
-      Alert.alert("Correo inválido", "El correo debe contener @ y .com");
+      Alert.alert("Correo invalido", "El correo debe contener @ y .com");
       return;
     }
 
@@ -73,7 +73,7 @@ export default function TextInputScreen() {
         <TextInput
           style={styles.input}
           placeholder="Ingrese su nombre"
-          placeholderTextColor="black"
+          placeholderTextColor="#999"
           autoCapitalize="words"
           value={nombre}
           onChangeText={(texto) => setNombre(texto)}
@@ -81,7 +81,7 @@ export default function TextInputScreen() {
         <TextInput
           style={styles.input}
           placeholder="Ingrese tu correo electronico"
-          placeholderTextColor="black"
+          placeholderTextColor="#999"
           keyboardType="email-address"
           autoCapitalize="none"
           value={correo}
@@ -109,7 +109,6 @@ export default function TextInputScreen() {
           placeholder="Sobre ti (opcional)"
           placeholderTextColor="#999"
           multiline={true}
-          numberOfLines={4}
           maxLength={20}
           value={bio}
           onChangeText={(texto) => setBio(texto)}
@@ -126,7 +125,7 @@ export default function TextInputScreen() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "z#fff",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
